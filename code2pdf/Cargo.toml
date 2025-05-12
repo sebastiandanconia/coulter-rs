@@ -7,4 +7,12 @@ edition = "2021"
 
 [dependencies]
 tempfile = "3"
-gtk = { version = "0.8", package = "gtk4" }
+glib = "0.15"
+gtk4 = { version = "0.9.6", package = "gtk4", features = ["v4_12"] }
+gio = "0.20"
+
+[build-dependencies]
+glib-build-tools = "0.18"
+
+[package.metadata]
+gschema = "schemas/com.github.username.sebastiandanconia.code2pdf.gschema.xml"

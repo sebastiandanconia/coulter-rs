@@ -2,50 +2,19 @@ use std::error::Error;
 use std::io::{Write};
 use std::process::{Command};
 
+pub mod config;
+pub use config::*;
+
 const ENSCRIPT: &str = "enscript";
 const PS2PDF: & str = "ps2pdf";
 
 
-#[derive(Debug,PartialEq)]
-enum Orientation {
-    Portrait,
-    Landscape,
-}
-
-#[derive(Debug,PartialEq)]
-pub struct Config {
-    // filename: Option<String>,
-    title: String,
-    media: String,
-    syntax: Option<String>,
-    font: String,
-    color: bool,
-    tabsize: u32,
-    columns: u32,
-    orientation: Orientation,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Config {
-            title: "Untitled".into(),
-            media: "Letter".into(),
-            syntax: None,
-            font: "Courier7".into(),
-            color: true,
-            tabsize: 4,
-            columns: 2,
-            orientation: Orientation::Landscape
-        }
-    }
-}
-
 // Convert a string containing user code into a PDF
-pub fn pretty_print(config: Config, code: &str) -> Result<String, Box<dyn Error>> {
+pub fn pretty_print(context: EnscriptContext) -> Result<String, Box<dyn Error>> {
 
     let mut txtfile = tempfile::NamedTempFile::new()?;
 
-    txtfile.write_all(code.as_bytes())?;
+    txtfile.write_all(context.code().as_bytes())?;
 
     let txt_path = txtfile.path().to_str().unwrap(); // FIXME: ok_or(InvalidData)?;
 
@@ -59,15 +28,47 @@ pub fn pretty_print(config: Config, code: &str) -> Result<String, Box<dyn Error>
         .prefix("pretty-print-")
         .suffix(".pdf")
         .rand_bytes(6)
-        .make(|_| Ok(()))?; // Skip the actual file creation step for now.
+        .make(|_| Ok(()))?; // Skip the actual file creation step.
 
     let pdf_path = phantom_pdf.path().to_str().unwrap().to_owned();
 
-    let mut options: Vec<String> = vec!["--no-job-header".into(), "--line-numbers".into(), "--landscape".into(),
-        format!("--media={}", config.media), format!("--title={}", config.title), "--header=%W |$%".into()];
-        options.extend([format!("--tabsize={0}", config.tabsize), format!("--columns={0}", config.columns)]);
-        options.extend(["--font=Courier7".into(), format!("--color={}", config.color)]);
-        options.extend(["-p".into(), ps_path.to_owned(), txt_path.to_owned()]);
+    let mut options: Vec<String> = Vec::<String>::new();
+
+        let orientation = match context.orientation() {
+            Orientation::Portrait => "--portrait",
+            Orientation::Landscape => "--landscape",
+        };
+
+        let header;
+        if context.title().is_some() {
+            header = "--header=%H| %W |$%";
+        } else {
+            header = "--header=%W |$%";
+        }
+
+        let syntax = match context.syntax() {
+            Some(lang) => format!("--highlight={}", lang.as_str()),
+            None => String::default(),
+        };
+
+        options.extend([
+            "--no-job-header".into(),
+            "--line-numbers".into(),
+
+            format!("--title={}", context.title().unwrap_or("Untitled")),
+            header.into(),
+            format!("--media={}", context.media().as_str()),
+            orientation.into(),
+            format!("--tabsize={0}", context.tabsize()),
+            format!("--columns={0}", context.columns()),
+            format!("--font={0}", context.font()),
+            format!("--color={}", if context.color() { 1 } else { 0 }),
+            syntax,
+
+            "-p".into(), ps_path.to_owned(), txt_path.to_owned()
+            ]);
+
+    // println!("Running `{} {}'", ENSCRIPT, options.join(" "));
     run_command(ENSCRIPT, &options)?;
 
     run_command(PS2PDF, &[

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="com.github.username.sebastiandanconia.code2pdf" path="/com/github/username/sebastiandanconia/code2pdf/">
+    <key name="media" type="s">
+      <default>'Letter'</default>
+      <summary>Paper size for PDF output</summary>
+    </key>
+    <key name="syntax" type="s">
+      <default>''</default>
+      <summary>Syntax highlighting language</summary>
+    </key>
+    <key name="font" type="s">
+      <default>'Courier7'</default>
+      <summary>Font for text rendering</summary>
+    </key>
+    <key name="color" type="b">
+      <default>true</default>
+      <summary>Enable color syntax highlighting</summary>
+    </key>
+    <key name="tabsize" type="u">
+      <default>4</default>
+      <summary>Tab size in spaces</summary>
+    </key>
+    <key name="columns" type="u">
+      <default>2</default>
+      <summary>Number of columns in PDF</summary>
+    </key>
+    <key name="orientation" type="s">
+      <default>'Landscape'</default>
+      <summary>Page orientation</summary>
+    </key>
+    <key name="pdf-viewer" type="s">
+      <default>'evince'</default>
+      <summary>PDF viewer program</summary>
+    </key>
+  </schema>
+</schemalist>
