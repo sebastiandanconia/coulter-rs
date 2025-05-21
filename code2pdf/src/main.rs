@@ -32,6 +32,7 @@ use code2pdf::{
     Media,
     Orientation,
     Syntax,
+    SYNTAX_OPTIONS,
     pretty_print
 };
 
@@ -105,72 +106,11 @@ fn build_window_main(app: &Application) {
     let label_syntax = Label::new(Some("Syntax highlighting:"));
     let syntax_combo = ComboBoxText::new();
     // Define syntax options with id and display name
-    let syntax_options = [
-        ("", "None"),
-        ("ada", "Ada95"),
-        ("asm", "Assembler"),
-        ("awk", "AWK"),
-        ("bash", "Bourne-Again Shell"),
-        ("c", "C"),
-        ("changelog", "ChangeLog"),
-        ("cpp", "C++"),
-        ("csh", "C-Shell"),
-        ("delphi", "Delphi"),
-        ("diff", "Normal Diff"),
-        ("diffs", "Side Diff"),
-        ("diffu", "Unified Diff"),
-        ("dylan", "Dylan"),
-        ("eiffel", "Eiffel"),
-        ("elisp", "Emacs Lisp"),
-        ("erlang", "Erlang"),
-        ("f90", "Fortran90"),
-        ("forth", "Forth"),
-        ("fortran", "Fortran77"),
-        ("fortran_pp", "Fortran77 with CPP"),
-        ("haskell", "Haskell"),
-        ("html", "HTML"),
-        ("icon", "Icon"),
-        ("idl", "IDL (CORBA)"),
-        ("inf", "INF Script"),
-        ("java", "Java"),
-        ("javascript", "JavaScript"),
-        ("ksh", "Korn Shell"),
-        ("lua", "Lua"),
-        ("m4", "M4 Macro"),
-        ("mail", "Mail/News"),
-        ("makefile", "Makefile"),
-        ("matlab", "Matlab"),
-        ("nroff", "Nroff"),
-        ("oberon2", "Oberon 2"),
-        ("objc", "Objective-C"),
-        ("octave", "Octave"),
-        ("outline", "Outline"),
-        ("oz", "Mozart/Oz"),
-        ("pascal", "Pascal"),
-        ("perl", "Perl"),
-        ("postscript", "PostScript"),
-        ("pyrex", "Pyrex"),
-        ("python", "Python"),
-        ("rfc", "RFC/Internet Draft"),
-        ("ruby", "Ruby"),
-        ("scheme", "Scheme"),
-        ("sh", "Bourne Shell"),
-        ("skill", "Skill"),
-        ("smalltalk", "Smalltalk"),
-        ("sml", "Standard ML"),
-        ("sql", "SQL (Sybase 11)"),
-        ("states", "States"),
-        ("synopsys", "Synopsys DC Shell"),
-        ("tcl", "Tcl"),
-        ("tcsh", "TC-Shell"),
-        ("tex", "TeX/LaTeX"),
-        ("vba", "Visual Basic"),
-        ("verilog", "Verilog"),
-        ("vhdl", "VHDL"),
-        ("vrml", "VRML"),
-        ("wmlscript", "WMLScript"),
-        ("zsh", "Z-Shell"),
-    ];
+    let syntax_options: Vec<(&'static str, &'static str)> =
+        std::iter::once(("", "None"))
+        .chain(SYNTAX_OPTIONS.iter()
+        .map(|&(_, id, display)| (id, display)))
+        .collect();
     for &(id, name) in &syntax_options {
         syntax_combo.append(Some(id), name);
     }
