@@ -1,0 +1,20 @@
+[package]
+name = "silly-rpc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = { version = "0.8.4", features = ["macros"] }
+proto = "0.1.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.140"
+tokio = { version = "1.45.0", features = ["full"] }
+tonic = { version = "0.13.1" }
+prost = "0.13"
+hyper = "1.0"
+tower = "0.4"
+uuid = { version = "1.10", features = ["v4", "serde"] }
+hex = "0.4.3"
+
+[build-dependencies]
+tonic-build = "0.13.1"

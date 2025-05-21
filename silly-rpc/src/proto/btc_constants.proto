@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package btc_constants;
+
+service BtcConstantService {
+    rpc GetBtcConstants (BtcConstantRequest) returns (BtcConstantResponse);
+}
+
+message BtcConstantRequest {
+    string transaction_id = 1;
+    string client_id = 2;
+}
+
+message BtcConstantResponse {
+    string transaction_id = 1;
+    bytes sec256k1_prime = 4;
+    bytes btc_genesis_hash = 5;
+}
