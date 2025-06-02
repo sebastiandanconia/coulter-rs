@@ -10,6 +10,11 @@ Code2PDF is a frontend for `enscript` and `ps2pdf`. You can copy and paste your 
 ~/src/coulter-rs/code2pdf$ cargo install --path .
 ```
 
+### Install Backend Programs
+```
+apt install enscript ghostscript
+```
+
 ### Install GSettings Schema
 #### Compiling and Installing the GSettings Schema
 This schema is required for Code2PDF to persist configuration settings in the GSettings database like a well-behaved GNOME application.
