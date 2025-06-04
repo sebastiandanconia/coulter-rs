@@ -23,7 +23,7 @@ def main():
     # Serialize the request to bytes
     request_bytes = request.SerializeToString()
     # Construct the URL
-    url = f"http://{args.host}:{args.port}/api/illegal-number/v1"
+    url = f"http://{args.host}:{args.port}/api/btc-constants/v1"
     headers = {"Content-Type": "application/x-protobuf"}
     try:
         # Send the POST request

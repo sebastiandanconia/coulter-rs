@@ -4,15 +4,14 @@ use crate::proto::btc_constants::{BtcConstantRequest, BtcConstantResponse};
 
 use crate::proto::btc_constants::btc_constant_service_server::BtcConstantService;
 
-use silly_rpc::{
-    get_sec256k1_prime,
-    get_genesis_hash,
-};
+use crate::{get_sec256k1_prime, get_genesis_hash};
 
 // Define the service implementation struct
 pub struct BtcConstantServiceImpl {
-    // Optional shared state (e.g., a database connection)
-    db: Arc<String>, // Placeholder for a real database connection
+    // Optional shared state (e.g., a database connection). Placeholder only —
+    // never read today, hence the allow.
+    #[allow(dead_code)]
+    db: Arc<String>,
 }
 
 impl BtcConstantServiceImpl {
