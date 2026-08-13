@@ -1,0 +1,40 @@
+[package]
+name = "uncontendable-lock"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.65"
+description = "Debug lock that aborts with backtraces on contention"
+license = "BSD-3-Clause"
+readme = "README.md"
+keywords = ["lock", "concurrency", "debugging", "mutex", "testing"]
+categories = ["concurrency", "development-tools::testing"]
+authors = ["James Walker Crofts"]
+exclude = ["target/**"]
+
+[features]
+default = []
+# Record owner backtraces and abort the process on contention. Off by default
+# so production builds stay zero-cost without a feature maze at every call site.
+enabled = []
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[[bin]]
+name = "single_lock"
+path = "src/bin/single_lock.rs"
+required-features = ["enabled"]
+doc = false
+
+[[bin]]
+name = "double_lock"
+path = "src/bin/double_lock.rs"
+required-features = ["enabled"]
+doc = false
+
+[[bin]]
+name = "cross_thread_lock"
+path = "src/bin/cross_thread_lock.rs"
+required-features = ["enabled"]
+doc = false
